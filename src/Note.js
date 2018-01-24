@@ -26,16 +26,16 @@ class Note extends Component {
         alert('removing note')
     }
 
-    save() {
-        alert(this._newText.value)
+    save(e) {
+        e.preventDefault()
     }
 
     renderForm() {
         return (
             <div className="note">
-                <form>
+                <form onSubmit={this.save}>
                     <textarea ref={input => this._newText = input}/>
-                    <button onClick={this.save}><FaFloppyO /></button>
+                    <button><FaFloppyO /></button>
                 </form>
             </div>
         )
@@ -44,7 +44,7 @@ class Note extends Component {
     renderDisplay() {
         return (
             <div className="note">
-                <p>Learn React</p>
+                <p>{this.props.children}</p>
                 <span>
                     <button onClick={this.edit} id="edit"><FaPencil /></button>
                     <button onClick={this.remove} id="remove"><FaTrash /></button>
