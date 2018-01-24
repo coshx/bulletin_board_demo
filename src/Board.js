@@ -15,13 +15,29 @@ class Board extends Component {
                     note: "Email John"
                 },
                 {
-                    id:  2,
-                    note: "Order Printer Ink"
+                    id: 2,
+                    note: "Order printer ink"
                 }
             ]
         }
         this.eachNote = this.eachNote.bind(this)
-        this.update - this.update.bind(this)
+        this.update = this.update.bind(this)
+        this.remove = this.remove.bind(this)
+        this.add = this.add.bind(this)
+    }
+
+    
+
+    add(text) {
+        this.setState(prevState => ({
+            notes: [
+                ...prevState.notes,
+                {
+                    id: 3,
+                    note: text
+                }
+            ]
+        })
     }
 
     update(newText, i) {
@@ -33,11 +49,19 @@ class Board extends Component {
         }))
     }
 
+    remove(id) {
+        console.log('removing item at', id)
+        this.setState(prevState => ({
+            notes: prevState.notes.filter(note => note.id !== id)
+        }))
+    }
+
     eachNote(note, i) {
         return (
             <Note   key={i}
                     index={i}
-                    onChange={this.update}>
+                    onChange={this.update}
+                    onRemove={this.remove}>
                     {note.note}
             </Note>
         )
