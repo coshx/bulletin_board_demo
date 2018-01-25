@@ -8,17 +8,12 @@ class Board extends Component {
         this.state = {
             notes: []
         }
+        this.add = this.add.bind(this)
         this.eachNote = this.eachNote.bind(this)
         this.update = this.update.bind(this)
         this.remove = this.remove.bind(this)
-        this.add = this.add.bind(this)
-//        this.nextId = this.nextId.bind(this)
+        this.nextId = this.nextId.bind(this)
     }
-
-//    nextId() {
-//        this.uniqueId = this.uniqueId || 0
-//        return this.uniqueId++
-//    }
 
     componentWillMount() {
         var self = this
@@ -43,6 +38,11 @@ class Board extends Component {
         }))
     }
 
+    nextId() {
+        this.uniqueId = this.uniqueId || 0
+        return this.uniqueId++
+    }
+
     update(newText, i) {
         console.log('updating item at index', i, newText)
         this.setState(prevState => ({
@@ -61,11 +61,11 @@ class Board extends Component {
 
     eachNote(note, i) {
         return (
-            <Note   key={i}
-                    index={i}
-                    onChange={this.update}
-                    onRemove={this.remove}>
-                    {note.note}
+            <Note key={note.id}
+                  index={note.id}
+                  onChange={this.update}
+                  onRemove={this.remove}>
+                  {note.note}
             </Note>
         )
     }
