@@ -12,12 +12,23 @@ class Board extends Component {
         this.update = this.update.bind(this)
         this.remove = this.remove.bind(this)
         this.add = this.add.bind(this)
-        this.nextId = this.nextId.bind(this)
+//        this.nextId = this.nextId.bind(this)
     }
 
-    nextId() {
-        this.uniqueId = this.uniqueId || 0
-        return this.uniqueId++
+//    nextId() {
+//        this.uniqueId = this.uniqueId || 0
+//        return this.uniqueId++
+//    }
+
+    componentWillMount() {
+        var self = this
+        if(this.props.count) {
+            fetch(`https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}`)
+                .then(response => response.json())
+                .then(json => json[0]
+                                .split('. ')
+                                .forEach(sentence => self.add(sentence.substring(0, 25))))
+        }
     }
 
     add(text) {
