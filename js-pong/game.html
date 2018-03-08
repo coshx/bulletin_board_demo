@@ -1,23 +1,32 @@
 <html>
-some text here
+002
 
 <canvas id="gameCanvas" width="800" height="600"></canvas>
 
 <script>
 
-var canvas
-var canvasContext
+var canvas;
+var canvasContext;
+var ballX = 50;
+var ballY = 50;
 
 window.onload = function() {
     console.log("Hello World! Hi!");
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
+
+    setInterval(drawEverything, 1000);
+}
+
+function drawEverything() {
+    ballX = ballX + 10;
+    console.log(ballX);
     canvasContext.fillStyle = 'black';
     canvasContext.fillRect(0,0,canvas.width,canvas.height);
     canvasContext.fillStyle = 'red';
-    canvasContext.fillRect(20,20,40,20);
+    canvasContext.fillRect(225,210,200,200);
     canvasContext.fillStyle = 'white';
-    canvasContext.fillRect(20,50,10,10);
+    canvasContext.fillRect(ballX,200,50,25);
 }
 
 </script>
