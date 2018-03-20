@@ -1,21 +1,22 @@
 <html>
 <canvas id="gameCanvas" width="800" height="600"></canvas>
-<button id="Coshx-home" style="background-color:black;"><a href='http://coshx.com' style="color: white;">Back to Coshx</a></button>
+<div>
+    <button id="Coshx-home" style="background-color:black;"><a href='http://coshx.com' style="color: white;">Back to Coshx</a></button>
+</div>
 
 <script>
 
     var canvas;
     var canvasContext;
 
-
     var ballX = 100;
     var ballY = 100;
 
     // Initial ball speed
-    var resetSpeedX = 12;
-    var resetSpeedY = 6;
-    var ballSpeedX = resetSpeedX;
-    var ballSpeedY = resetSpeedY;
+    var initialSpeedX = 12;
+    var initialSpeedY = 6;
+    var ballSpeedX = initialSpeedX;
+    var ballSpeedY = initialSpeedY;
 
     var player1Score = 0;
     var player2Score = 0;
@@ -29,6 +30,7 @@
     const PADDLE_HEIGHT = 100;
     const PADDLE_WIDTH = 10;
 
+    //
     function calculateMousePos(evt) {
         var rect = canvas.getBoundingClientRect();
         var root = document.documentElement;
@@ -40,6 +42,7 @@
         }
     }
 
+    // on Win screen, mouseclick resets game
     function handleMouseClick(evt) {
         if(showingWinScreen) {
             player1Score = 0;
@@ -52,30 +55,38 @@
         canvas = document.getElementById('gameCanvas');
         canvasContext = canvas.getContext('2d');
 
+        // set framerate
         var framesPerSecond = 30;
+        // run game
         setInterval(function() {
             moveEverything();
             drawEverything();
-        }, 1000/framesPerSecond);
+        }, 1000/framesPerSecond); // divide framerate into 1000 milliseconds to get final framerate
 
+        // if on Win screen, click mouse to reset game
         canvas.addEventListener('mousedown',handleMouseClick);
 
+        // move left paddle using mouse
         canvas.addEventListener('mousemove',
             function(evt) {
-                var mousePos = calculateMousePos(evt);
-                paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);
+                var mousePos = calculateMousePos(evt); // call function to capture mouse position
+                paddle1Y = mousePos.y - (PADDLE_HEIGHT/2); // center mouse cursor on paddle
             });
     }
 
+    // reset ball after scoring
     function ballReset() {
         if(player1Score >= WINNING_SCORE ||
             player2Score >= WINNING_SCORE) {
                 showingWinScreen = true;
         }
-        ballSpeedX = resetSpeedX;
-        ballSpeedY = resetSpeedY;
+        // reset ball speed
+        ballSpeedX = initialSpeedX;
+        ballSpeedY = initialSpeedY;
+        // flip ball direction
         ballSpeedY = -ballSpeedY;
         ballSpeedX = -ballSpeedX;
+        // move ball to the center of the field
         ballX = canvas.width/2;
         ballY = canvas.height/2;
     }
@@ -83,9 +94,9 @@
     // Right paddle AI
     function computerMovement() {
         var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2);
-        if(paddle2YCenter < ballY-35) {
+        if(paddle2YCenter < ballY-25) {
             paddle2Y += computerPaddleSpeed;
-        } else if(paddle2YCenter > ballY+35) {
+        } else if(paddle2YCenter > ballY+25) {
             paddle2Y -= computerPaddleSpeed;
         }
     }
