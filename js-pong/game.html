@@ -12,8 +12,10 @@
     var ballY = 100;
 
     // Initial ball speed
-    var ballSpeedX = 10;
-    var ballSpeedY = 4;
+    var resetSpeedX = 12;
+    var resetSpeedY = 6;
+    var ballSpeedX = resetSpeedX;
+    var ballSpeedY = resetSpeedY;
 
     var player1Score = 0;
     var player2Score = 0;
@@ -70,12 +72,15 @@
             player2Score >= WINNING_SCORE) {
                 showingWinScreen = true;
         }
+        ballSpeedX = resetSpeedX;
+        ballSpeedY = resetSpeedY;
         ballSpeedY = -ballSpeedY;
         ballSpeedX = -ballSpeedX;
         ballX = canvas.width/2;
         ballY = canvas.height/2;
     }
 
+    // Right paddle AI
     function computerMovement() {
         var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2);
         if(paddle2YCenter < ballY-35) {
@@ -86,19 +91,24 @@
     }
 
     function moveEverything() {
+        // skip movement if on the Win screen
         if(showingWinScreen) {
             return;
         }
-        computerMovement();
+        computerMovement(); //AI movement function
 
+        //Ball movement
         ballX += ballSpeedX;
         ballY += ballSpeedY;
 
+        // ball reflection off left paddle
         if(ballX < PADDLE_WIDTH) {
+            //recognize paddle height
             if(ballY > paddle1Y &&
                ballY < paddle1Y+PADDLE_HEIGHT) {
                     ballSpeedX = -ballSpeedX;
 
+                    // Ball deflection physics
                     var deltaY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
                     ballSpeedY = deltaY * 0.35;
             } else {
@@ -107,25 +117,29 @@
             }
         }
 
+        // ball reflection off right paddle
         if(ballX > canvas.width-(PADDLE_WIDTH)) {
-            // padle bounce
+            // recognize paddle height
             if(ballY > paddle2Y &&
                ballY < paddle2Y+PADDLE_HEIGHT) {
                     ballSpeedX = -ballSpeedX;
 
+                    // Ball deflection physics
                     var deltaY = ballY - (paddle2Y+PADDLE_HEIGHT/2);
                     ballSpeedY = deltaY * 0.35;
             } else {
                 // score
                 player1Score++; // Must be before ballReset();
-                ballReset();
+                ballReset(); //
             }
         }
 
+        //Ball reflection left side
         if(ballY < 0) {
             ballSpeedY = -ballSpeedY;
         }
 
+        //Ball reflection right side
         if(ballY > canvas.height) {
             ballSpeedY = -ballSpeedY;
         }
